@@ -67,6 +67,14 @@
       "linter": "eslint",
       "style": "scss",
       "unitTestRunner": "jest"
+    },
+    "@nx/angular:component": {
+      "style": "scss",
+      "standalone": true,
+      "inlineStyle": true,
+      "inlineTemplate": true,
+      "changeDetection": "OnPush",
+      "nameAndDirectoryFormat": "as-provided"
     }
   },
   "defaultProject": "lykaos-roses-day"
