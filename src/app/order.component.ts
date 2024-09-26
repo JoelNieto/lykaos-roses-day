@@ -46,7 +46,9 @@ import { SupabaseService } from './supabase.service';
       <img src="/lykaos-logo.png" alt="Lykaos Logo" class="h-10" />
       <span class="text-slate-50 mb-0">Dia del amor y la amistad 2024</span>
     </div>
-    <div class="p-4 mt-16 h-screen mb-12">
+    <div
+      class="p-4 mt-16 h-screen mb-12 g-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90%"
+    >
       <div class="flex flex-col gap-2">
         <h1>Nuevo pedido</h1>
         <div class="input-group">
