@@ -40,6 +40,7 @@ import { SupabaseService } from './supabase.service';
   ],
   providers: [ConfirmationService, MessageService],
   template: `<p-confirmDialog />
+    <p-toast />
     <div
       class=" p-4 fixed top-0 w-full bg-indigo-400 flex gap-4 items-center z-20"
     >
@@ -61,6 +62,7 @@ import { SupabaseService } from './supabase.service';
             [options]="groups() ?? []"
             optionValue="id"
             optionLabel="name"
+            filter
             placeholder="Selecciona un grupo"
             [(ngModel)]="classroom_id"
           />
@@ -170,6 +172,15 @@ export class OrderComponent {
   }
 
   sendOrder() {
+    if (!this.name() || !this.receiver() || !this.classroom_id()) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Error',
+        detail: 'Debes llenar todos los campos',
+      });
+      return;
+    }
+
     this.confirmationService.confirm({
       header: 'Confirmar',
       message: `¿Estás seguro de hacer el pedido por ${this.totalAmount()} ?`,

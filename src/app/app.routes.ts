@@ -12,6 +12,11 @@ export const appRoutes: Route[] = [
       import('./receipt.component').then((m) => m.ReceiptComponent),
   },
   {
+    path: 'order/:orderId',
+    loadComponent: () =>
+      import('./order-detail.component').then((m) => m.OrderDetailComponent),
+  },
+  {
     path: 'orders-list',
     loadComponent: () =>
       import('./orders-list.component').then((m) => m.OrdersListComponent),

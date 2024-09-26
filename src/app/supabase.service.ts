@@ -16,4 +16,8 @@ export class SupabaseService {
   uploadFile(path: string, file: File) {
     return this.client.storage.from('receipts').upload(path, file);
   }
+
+  downloadFile(path: string) {
+    return this.client.storage.from('receipts').download(path);
+  }
 }

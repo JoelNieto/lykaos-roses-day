@@ -90,8 +90,8 @@ export class ReceiptComponent implements OnInit {
       const filePath = `${Math.random()}.${fileExt}`;
 
       const { data } = await this.supabase.uploadFile(filePath, file);
-      if (data?.fullPath) {
-        this.updateOrder(data.fullPath);
+      if (data?.path) {
+        this.updateOrder(data.path);
       }
     } catch (error) {
       if (error instanceof Error) {
