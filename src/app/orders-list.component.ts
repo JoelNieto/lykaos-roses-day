@@ -45,8 +45,9 @@ import { SupabaseService } from './supabase.service';
         @for(order of orders(); track order.id) { @if(!selectedGroup() ||
         order.classroom_id === selectedGroup()) {
 
-        <p-card [header]="order.receiver" (click)="goToOrder(order.id)">
+        <p-card header=" #{{ order.id }}" (click)="goToOrder(order.id)">
           <div class="flex flex-col gap-2">
+            <p>Comprador: {{ order.name }}</p>
             <p>
               Total: {{ order.amount | currency }} | Para: {{ order.receiver }}
             </p>
