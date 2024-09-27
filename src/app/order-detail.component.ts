@@ -34,7 +34,7 @@ import { SupabaseService } from './supabase.service';
   providers: [ConfirmationService, MessageService],
   template: `<p-confirmDialog />
     <p-toast />
-    <div class="p-4 h-screen mb-12 flex justify-center items-center">
+    <div class="p-4 h-screen mb-12">
       <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
         <h2 class="text-2xl font-bold mb-4">Pedido #{{ order()?.id }}</h2>
         <div class="mb-4">
