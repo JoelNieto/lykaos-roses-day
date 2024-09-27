@@ -77,8 +77,9 @@ import { SupabaseService } from './supabase.service';
         <div class="flex justify-center mb-4">
           <a
             routerLink="/orders-list"
-            class="p-button font-bold p-button-secondary p-button-outlined"
-            >Volver</a
+            class="p-button font-bold p-button-secondary p-button-outlined flex gap-2"
+          >
+            <i class="pi pi-arrow-left"></i> Volver</a
           >
         </div>
         @if(!order()?.delivered) {

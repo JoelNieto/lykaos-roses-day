@@ -69,3 +69,10 @@ h6 {
 h1 {
   @apply text-3xl;
 }
+
+.p-chip.success {
+  @apply bg-green-600 text-green-50;
+}
+.p-chip.warning {
+  @apply bg-red-500 text-red-50;
+}

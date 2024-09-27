@@ -10,14 +10,23 @@ import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CardModule } from 'primeng/card';
+import { ChipModule } from 'primeng/chip';
 import { DropdownModule } from 'primeng/dropdown';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { from, map } from 'rxjs';
 import { SupabaseService } from './supabase.service';
 
 @Component({
   selector: 'app-orders-list',
   standalone: true,
-  imports: [CardModule, CurrencyPipe, DropdownModule, FormsModule],
+  imports: [
+    CardModule,
+    CurrencyPipe,
+    DropdownModule,
+    FormsModule,
+    InputNumberModule,
+    ChipModule,
+  ],
   template: `<div
       class=" p-4 fixed top-0 w-full bg-emerald-400 flex gap-4 items-center z-20"
     >
@@ -26,10 +35,9 @@ import { SupabaseService } from './supabase.service';
     </div>
     <div class="p-4 mt-16 h-screen mb-12">
       <div class="flex flex-col gap-2">
-        <h2>Pedidos</h2>
+        <p class="font-medium text-lg text-slate-700">Pedidos</p>
         <p>Total: {{ currentCount() }}</p>
-        <div class="input-group mb-4">
-          <label for="group">Grupo</label>
+        <div class="input-group">
           <p-dropdown
             [options]="groups() ?? []"
             optionLabel="name"
@@ -37,14 +45,16 @@ import { SupabaseService } from './supabase.service';
             [(ngModel)]="selectedGroup"
             filter
             showClear
-            placeholder="Todos"
+            placeholder="--Todos los grupos--"
           />
+        </div>
+        <div class="input-group mb-4">
+          <p-inputNumber [(ngModel)]="orderId" placeholder="Buscar pedido" />
         </div>
       </div>
       <div class="flex flex-col gap-4">
-        @for(order of orders(); track order.id) { @if(!selectedGroup() ||
-        order.classroom_id === selectedGroup()) {
-
+        @for(order of filtered(); track order.id) { @if(!orderId() || order.id
+        === orderId()) {
         <p-card header=" #{{ order.id }}" (click)="goToOrder(order.id)">
           <div class="flex flex-col gap-2">
             <p>Comprador: {{ order.name }}</p>
@@ -62,18 +72,25 @@ import { SupabaseService } from './supabase.service';
           <p class="text-green-600">Entregado</p>
           } @else {
           <p class="text-slate-500">Por entregar</p>
+          } @if(order.receipt_url) {
+          <p-chip label="Con comprobante" styleClass="success" />
+          } @else {
+          <p-chip styleClass="warning" label="Sin comprobante" />
           }
         </p-card>
-        } }
+        }}
       </div>
     </div> `,
-  styles: ``,
+  styles: `
+
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrdersListComponent {
   private supabase = inject(SupabaseService);
   private router = inject(Router);
   selectedGroup = model<number>();
+  orderId = model<number>();
   groups = toSignal(
     from(this.supabase.client.from('classrooms').select('*')).pipe(
       map(({ data }) => data)
@@ -93,7 +110,15 @@ export class OrdersListComponent {
         .select(
           '*, classroom:classrooms(*), items:order_items(*, item:items(*))'
         )
+        .order('id', { ascending: true })
     ).pipe(map(({ data }) => data))
+  );
+
+  filtered = computed(
+    () =>
+      this.orders()?.filter((x) =>
+        this.selectedGroup() ? x.classroom_id === this.selectedGroup() : true
+      ) ?? []
   );
 
   goToOrder(orderId: string) {
