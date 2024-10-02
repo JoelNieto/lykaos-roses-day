@@ -172,6 +172,13 @@ export class OrderComponent {
   }
 
   sendOrder() {
+    this.confirmationService.confirm({
+      header: 'Tienda cerrada',
+      message: `La tienda está cerrada, ¿quieres enviar el pedido de todas formas?`,
+      rejectVisible: false,
+      acceptLabel: 'OK',
+    });
+    return;
     if (!this.name() || !this.receiver() || !this.classroom_id()) {
       this.messageService.add({
         severity: 'error',
