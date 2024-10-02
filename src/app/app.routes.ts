@@ -21,5 +21,10 @@ export const appRoutes: Route[] = [
     loadComponent: () =>
       import('./orders-list.component').then((m) => m.OrdersListComponent),
   },
+  {
+    path: 'items',
+    loadComponent: () =>
+      import('./items.component').then((m) => m.ItemsComponent),
+  },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];
