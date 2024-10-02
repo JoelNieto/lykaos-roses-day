@@ -172,54 +172,13 @@ export class OrderComponent {
   }
 
   sendOrder() {
-    if (!this.name() || !this.receiver() || !this.classroom_id()) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Debes llenar todos los campos',
-      });
-      return;
-    }
-
     this.confirmationService.confirm({
-      header: 'Confirmar',
-      message: `¿Estás seguro de hacer el pedido por ${this.totalAmount()} ?`,
-      acceptIcon: 'none',
-      rejectIcon: 'none',
-      rejectButtonStyleClass: 'p-button-text',
-      rejectLabel: 'Cancelar',
-      acceptLabel: 'Enviar',
-      accept: () => {
-        this.saveOrder();
-      },
+      header: 'Tienda cerrada',
+      message: `Ya no puedes hacer pedidos, la tienda está cerrada`,
+      icon: 'pi pi-exclamation-triangle',
+      rejectVisible: false,
+      acceptLabel: 'OK',
     });
-  }
-
-  async saveOrder() {
-    const { data, error } = await this.supabase.client
-      .from('orders')
-      .insert([
-        {
-          name: this.name(),
-          receiver: this.receiver(),
-          amount: this.totalAmount(),
-          classroom_id: this.classroom_id(),
-          message: this.message(),
-        },
-      ])
-      .select('*')
-      .single();
-
-    if (error) {
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: 'Error al guardar la orden',
-      });
-      return;
-    }
-    await this.saveItem(data.id);
-    this.router.navigate(['/receipt', data.id]);
   }
 
   async saveItem(orderId: number) {
